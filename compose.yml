@@ -5,11 +5,20 @@ services:
       build: .
       networks:
         - "net"
-
+        - "intranet"
       environment:
-        - LETSENCRYPT_HOST=${MY_IP}.nip.io
-        - VIRTUAL_HOST=${MY_IP}.nip.io
-        - LETSENCRYPT_EMAIL="fbbtlm03b09d869t@isisbernocchi.edu.it"
+        VIRTUAL_HOST: "*.preview.app.github.dev"
+      ports:
+        - "81:80"
+    mysql:
+      environment:
+        MYSQL_DATABASE: mydb
+        MYSQL_ROOT_PASSWORD: qwerty
+      image: mysql:5.7
+      networks:
+        - "intranet"
+      volumes:
+        - ./db.sql:/docker-entrypoint-initdb.d/setup.sql
     reverse-proxy:
         image: "jwilder/nginx-proxy:latest"
         container_name: "reverse-proxy"
@@ -51,3 +60,5 @@ volumes:
 networks:
   net:
     external: true
+  intranet:
+    internal: true
