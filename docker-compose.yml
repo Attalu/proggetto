@@ -7,9 +7,11 @@ services:
         - "net"
         - "intranet"
       environment:
-        VIRTUAL_HOST: "*.preview.app.github.dev"
+        - LETSENCRYPT_HOST=${MY_IP}.nip.io
+        - VIRTUAL_HOST=${MY_IP}.nip.io
       ports:
         - "81:80"
+        
     mysql:
       environment:
         MYSQL_DATABASE: mydb
